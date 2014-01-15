@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Wind Animation</title>
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.8/js/esri/css/esri.css">
+    <style>
+      html,body {
+        width:100%;
+        height:100%;
+        margin: 0;
+        padding: 0px 0 0 0;
+      }
+
+      #mapCanvas {
+        border:solid 1px #888;
+        padding:0;
+      }
+
+    </style>
+
+    <script>
+      var dojoConfig = { 
+        paths: {
+          plugins: location.pathname.replace(/\/[^/]+$/, "") + "/plugins"
+        }
+      };
+    </script>
+    <script src="./windy.js"></script>
+    <script src="http://js.arcgis.com/3.8compact/"></script>
+    <script>
+      var map, rasterLayer;
+      var canvasSupport;
+
+      require([
+        "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", 
+        "esri/domUtils", "esri/request",
+        "dojo/parser", "dojo/number", "dojo/json", "dojo/dom", 
+        "dijit/registry", "plugins/RasterLayer","esri/layers/WebTiledLayer",
+        "dojo/domReady!"
+      ], function(
+        Map, ArcGISTiledMapServiceLayer, 
+        domUtils, esriRequest,
+        parser, number, JSON, dom, 
+        registry, RasterLayer, WebTiledLayer
+      ){
+        parser.parse();
+        // does the browser support canvas? 
+        canvasSupport = supports_canvas();
+        
+        // hook up elevation slider events
+        map = new Map("mapCanvas", {
+          center: [-99.076, 39.132],
+          zoom: 5,
+          basemap: "satellite"
+        });
+
+        map.on("load", mapLoaded);
+
+        // Base map
+          //var basemap = new WebTiledLayer("http://mapattack-tiles-0.pdx.esri.com/dark/${level}/${row}/${col}.png");
+          //console.log('basemap', basemap)
+          //map.addLayer(basemap);
+
+        function mapLoaded() {
+
+          // Add raster layer
+          if ( canvasSupport ) {
+            rasterLayer = new RasterLayer(null, {
+              opacity: 0.55
+            });
+            map.addLayer(rasterLayer);
+            
+            map.on("extent-change", redraw);
+
+            var layersRequest = esriRequest({
+              url: './gfs.json',
+              content: {},
+              handleAs: "json"
+            });
+            layersRequest.then(
+              function(response) {
+                //console.log("Success: ", arguments);
+                windy = new Windy({ canvas: rasterLayer._element, data: response });
+                redraw();
+            }, function(error) {
+                console.log("Error: ", error.message);
+            });
+
+          } else {
+            dom.byId("mapCanvas").innerHTML = "This browser doesn't support canvas. Visit <a target='_blank' href='http://www.caniuse.com/#search=canvas'>caniuse.com</a> for supported browsers";
+          }
+          
+          //resize the map when the browser resizes
+          //registry.byId("mapCanvas").on("resize", function() {
+          //  redraw();
+          //});
+        }
+
+        // does the browser support canvas? 
+        function supports_canvas() {
+          return !!document.createElement("canvas").getContext;
+        }
+
+        function redraw(){
+          //console.log('redraw', map.height, map.width, map.geographicExtent );
+          var extent = map.geographicExtent;
+          windy.start([[0,0],[map.width, map.height]], map.width, map.height, [[extent.xmin, extent.ymin],[extent.xmax, extent.ymax]]);
+        }
+      });
+    </script>
+  </head>
+  
+  <body class="">
+     <div id="mapCanvas" style="height:100%;">
+     </div>
+  </body>
+
+</html>
