@@ -69,6 +69,7 @@
             map.addLayer(rasterLayer);
             
             map.on("extent-change", redraw);
+            map.on("resize", function(){});
 
             var layersRequest = esriRequest({
               url: './gfs.json',
@@ -87,11 +88,6 @@
           } else {
             dom.byId("mapCanvas").innerHTML = "This browser doesn't support canvas. Visit <a target='_blank' href='http://www.caniuse.com/#search=canvas'>caniuse.com</a> for supported browsers";
           }
-          
-          //resize the map when the browser resizes
-          //registry.byId("mapCanvas").on("resize", function() {
-          //  redraw();
-          //});
         }
 
         // does the browser support canvas? 
@@ -100,9 +96,21 @@
         }
 
         function redraw(){
-          //console.log('redraw', map.height, map.width, map.geographicExtent );
+
+          rasterLayer._element.width = map.width;
+          rasterLayer._element.height = map.height;
+
+          windy.stop();
+
           var extent = map.geographicExtent;
-          windy.start([[0,0],[map.width, map.height]], map.width, map.height, [[extent.xmin, extent.ymin],[extent.xmax, extent.ymax]]);
+          setTimeout(function(){
+            windy.start(
+              [[0,0],[map.width, map.height]], 
+              map.width, 
+              map.height, 
+              [[extent.xmin, extent.ymin],[extent.xmax, extent.ymax]]
+            );
+          },500);
         }
       });
     </script>

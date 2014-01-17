@@ -281,7 +281,6 @@ var Windy = function( params ){
         var column = [];
         for (var y = bounds.y; y <= bounds.yMax; y += 2) {
                 var coord = invert( x, y, extent );
-                //console.log('POINT', x,y, coord, extent); debugger;
                 if (coord) {
                     var λ = coord[0], φ = coord[1];
                     if (isFinite(λ)) {
@@ -445,6 +444,7 @@ var Windy = function( params ){
   var stop = function(){
     if (windy.field) windy.field.release();
   };
+
     
   var windy = {
     params: params,
