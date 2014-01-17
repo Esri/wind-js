@@ -354,7 +354,7 @@ var Windy = function( params, map ){
                     if (isFinite(λ)) {
                         var wind = grid.interpolate(λ, φ);
                         if (wind) {
-                            //wind = distort(projection, λ, φ, x, y, velocityScale, wind, extent);
+                            wind = distort(projection, λ, φ, x, y, velocityScale, wind, extent);
                             column[y+1] = column[y] = wind;
                             //color = gradient(proportion(wind[2], scale.bounds), OVERLAY_ALPHA);
 
@@ -394,7 +394,7 @@ var Windy = function( params, map ){
   var animate = function(bounds, field) {
 
     function asColorStyle(r, g, b, a) {
-        return "rgba(" + 149 + ", " + 167 + ", " + 178 + ", " + a + ")";
+        return "rgba(" + 49 + ", " + 167 + ", " + 178 + ", " + a + ")";
         //return "rgba(" + 229 + ", " + 75 + ", " + 75 + ", " + a + ")";
         //return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
     }
@@ -421,7 +421,7 @@ var Windy = function( params, map ){
       */
         var result = [];
         for (var j = 225; j >= 100; j = j - step) {
-          result.push(asColorStyle(j, j, j, .5));
+          result.push(asColorStyle(j, j, j, 1));
         }
        
         result.indexFor = function(m) {  // map wind speed to a style
@@ -534,7 +534,7 @@ var Windy = function( params, map ){
     stop();
 
     // build grid
-    console.log('params.data', params); 
+    //console.log('params.data', params); 
     buildGrid( params.data, function(grid){
       // interpolateField
       interpolateField( grid, buildBounds( bounds, width, height), mapBounds, function( bounds, field ){
