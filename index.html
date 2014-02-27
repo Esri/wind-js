@@ -38,22 +38,30 @@
         "esri/domUtils", "esri/request",
         "dojo/parser", "dojo/number", "dojo/json", "dojo/dom", 
         "dijit/registry", "plugins/RasterLayer","esri/layers/WebTiledLayer",
+        "esri/config",
         "dojo/domReady!"
       ], function(
         Map, ArcGISTiledMapServiceLayer, 
         domUtils, esriRequest,
         parser, number, JSON, dom, 
-        registry, RasterLayer, WebTiledLayer
+        registry, RasterLayer, WebTiledLayer, esriConfig
       ){
         parser.parse();
         // does the browser support canvas? 
         canvasSupport = supports_canvas();
         
         // hook up elevation slider events
+        esriConfig.defaults.map.basemaps.darkgray = {
+          baseMapLayers: [
+            { url: "http://tiles4.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Dark_Gray_Base_Beta/MapServer" }
+          ],
+          title: "Dark Gray"
+        };
+
         map = new Map("mapCanvas", {
           center: [-99.076, 39.132],
-          zoom: 4,
-          basemap: "satellite"
+          zoom: 3,
+          basemap: "darkgray"
         });
 
         map.on("load", mapLoaded);

@@ -15,7 +15,7 @@ var Windy = function( params ){
   var INTENSITY_SCALE_STEP = 10;            // step size of particle intensity color scale
   var MAX_WIND_INTENSITY = 15;              // wind velocity at which particle intensity is maximum (m/s)
   var MAX_PARTICLE_AGE = 75;                // max number of frames a particle is drawn before regeneration
-  var PARTICLE_LINE_WIDTH = 1;              // line width of a drawn particle
+  var PARTICLE_LINE_WIDTH = 0.8;              // line width of a drawn particle
   var PARTICLE_MULTIPLIER = 4;              // particle count scalar (completely arbitrary--this values looks nice)
   var PARTICLE_REDUCTION = 0.75;            // reduce particle count to this much of normal for mobile devices
   var FRAME_RATE = 20;                      // desired milliseconds per frame
@@ -314,14 +314,34 @@ var Windy = function( params ){
   var animate = function(bounds, field) {
 
     function asColorStyle(r, g, b, a) {
-        return "rgba(" + 49 + ", " + 167 + ", " + 178 + ", " + a + ")";
+        return "rgba(" + 243 + ", " + 243 + ", " + 238 + ", " + a + ")";
     }
     
+    function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+    function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+    function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+    function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+
     function windIntensityColorScale(step, maxWind) {
+
+        result = [
+          "rgba(" + hexToR('#00ffff') + ", " + hexToG('#00ffff') + ", " + hexToB('#00ffff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#64f0ff') + ", " + hexToG('#64f0ff') + ", " + hexToB('#64f0ff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#87e1ff') + ", " + hexToG('#87e1ff') + ", " + hexToB('#87e1ff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#a0d0ff') + ", " + hexToG('#a0d0ff') + ", " + hexToB('#a0d0ff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#b5c0ff') + ", " + hexToG('#b5c0ff') + ", " + hexToB('#b5c0ff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#c6adff') + ", " + hexToG('#c6adff') + ", " + hexToB('#c6adff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#d49bff') + ", " + hexToG('#d49bff') + ", " + hexToB('#d49bff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#e185ff') + ", " + hexToG('#e185ff') + ", " + hexToB('#e185ff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#ec6dff') + ", " + hexToG('#ec6dff') + ", " + hexToB('#ec6dff') + ", " + 0.5 + ")",
+          "rgba(" + hexToR('#f64dff') + ", " + hexToG('#f64dff') + ", " + hexToB('#f64dff') + ", " + 0.5 + ")"
+        ]
+        /*
         var result = [];
         for (var j = 225; j >= 100; j = j - step) {
           result.push(asColorStyle(j, j, j, 1));
         }
+        */
         result.indexFor = function(m) {  // map wind speed to a style
             return Math.floor(Math.min(m, maxWind) / maxWind * (result.length - 1));
         };
