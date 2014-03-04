@@ -1,0 +1,36 @@
+html,body {
+  width:100%;
+  height:100%;
+  margin: 0;
+  padding: 0px 0 0 0;
+}
+
+.parent.perspective {
+  -webkit-transform: perspective(250px) rotateX(30deg);
+     -moz-transform: perspective(250px) rotateX(30deg);
+  -webkit-transform-style: preserve-3d;
+     -moz-transform-style: preserve-3d;
+}
+
+
+#mapCanvas {
+  position: absolute;
+  height: 400px;
+  width: 70%;
+  top: -40px;
+  -moz-transform: translateZ(50px);
+  -webkit-transform: translateZ(50px);
+  left: 168px;
+  border: 1px solid #000;
+  pointer-events:none;
+}
+#mapCanvas #esriControlsBR, #mapCanvas #mapCanvas_zoom_slider { 
+  display:none;
+}
+
+
+#mapCanvas-map {
+  height: 400px;
+  width: 80%;
+  margin-left:100px;
+}
