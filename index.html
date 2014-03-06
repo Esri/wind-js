@@ -77,6 +77,8 @@
             
             map.on("extent-change", redraw);
             map.on("resize", function(){});
+            map.on("zoom-start", redraw);
+            map.on("pan-start", redraw);
 
             var layersRequest = esriRequest({
               url: './gfs.json',
@@ -85,7 +87,6 @@
             });
             layersRequest.then(
               function(response) {
-                //console.log("Success: ", arguments);
                 windy = new Windy({ canvas: rasterLayer._element, data: response });
                 redraw();
             }, function(error) {

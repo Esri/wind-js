@@ -436,7 +436,7 @@ var Windy = function( params ){
 
     (function frame() {
         try {
-            setTimeout(function() {
+            windy.timer = setTimeout(function() {
               requestAnimationFrame(frame);
               evolve();
               draw();
@@ -475,6 +475,7 @@ var Windy = function( params ){
 
   var stop = function(){
     if (windy.field) windy.field.release();
+    if (windy.timer) clearTimeout(windy.timer)
   };
 
     
