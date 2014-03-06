@@ -102,6 +102,7 @@ define([
       if (!this._canDraw()) {
         return;
       }
+
       this._context.clearRect(0, 0, this._mapWidth, this._mapHeight);
     },
     
@@ -117,6 +118,12 @@ define([
       domStyle.set(this._element, { left: delta.x + "px", top: delta.y + "px" });
     },
     
+    _extentChangeHandler: function(extent, delta, levelChange, lod) {
+      if (!levelChange) {
+        domStyle.set(this._element, { left: "0px", top: "0px" });
+        this.clear();
+      }
+    },
     
     /****************
      * Miscellaneous
@@ -129,7 +136,7 @@ define([
       else { 
         domUtils.hide(this._element);
       }
-    },
+    }
     
   });
 
