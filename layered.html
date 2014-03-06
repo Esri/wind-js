@@ -6,21 +6,7 @@
     <title>Wind Animation</title>
 
     <link rel="stylesheet" href="http://js.arcgis.com/3.8/js/esri/css/esri.css">
-
-    <style>
-      html,body {
-        width:100%;
-        height:100%;
-        margin: 0;
-        padding: 0px 0 0 0;
-      }
-
-      #mapCanvas {
-        padding:0;
-      }
-
-    </style>
-
+    <link rel="stylesheet" href="css/style.css">
     <script>
       var dojoConfig = { 
         paths: {
@@ -59,10 +45,16 @@
           title: "Dark Gray"
         };
 
-        map = new Map("mapCanvas", {
+        map = new Map("mapCanvas-map", {
           center: [-99.076, 39.132],
           zoom: 3,
           basemap: "darkgray"
+        });
+
+        map2 = new Map("mapCanvas", {
+          center: [-99.076, 39.132],
+          zoom: 3,
+          basemap: ""
         });
 
         map.on("load", mapLoaded);
@@ -72,14 +64,14 @@
           // Add raster layer
           if ( canvasSupport ) {
             rasterLayer = new RasterLayer(null, {
-              opacity: 0.55
+              opacity: 0.8
             });
-            map.addLayer(rasterLayer);
+            map2.addLayer(rasterLayer);
             
+            map2.on("extent-change", redraw);
+            map2.on("resize", function(){});
             map.on("extent-change", redraw);
             map.on("resize", function(){});
-            map.on("zoom-start", redraw);
-            map.on("pan-start", redraw);
 
             var layersRequest = esriRequest({
               url: './gfs.json',
@@ -88,6 +80,7 @@
             });
             layersRequest.then(
               function(response) {
+                //console.log("Success: ", arguments);
                 windy = new Windy({ canvas: rasterLayer._element, data: response });
                 redraw();
             }, function(error) {
@@ -95,7 +88,7 @@
             });
 
           } else {
-            dom.byId("mapCanvas").innerHTML = "This browser doesn't support canvas. Visit <a target='_blank' href='http://www.caniuse.com/#search=canvas'>caniuse.com</a> for supported browsers";
+            dom.byId("mapCanvas-map").innerHTML = "This browser doesn't support canvas. Visit <a target='_blank' href='http://www.caniuse.com/#search=canvas'>caniuse.com</a> for supported browsers";
           }
         }
 
@@ -106,8 +99,8 @@
 
         function redraw(){
 
-          rasterLayer._element.width = map.width;
-          rasterLayer._element.height = map.height;
+          rasterLayer._element.width = map2.width;
+          rasterLayer._element.height = map2.height;
 
           windy.stop();
 
@@ -126,8 +119,10 @@
   </head>
   
   <body class="">
-     <div id="mapCanvas" style="height:100%;">
-     </div>
+    <div class="parent perspective">
+      <div id="mapCanvas-map"></div>
+      <div id="mapCanvas"></div>
+    </div>
   </body>
 
 </html>
