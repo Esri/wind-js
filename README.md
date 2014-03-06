@@ -1,5 +1,8 @@
 # Wind-JS  
 
+![Wind JS](https://f.cloud.github.com/assets/351164/2349895/36ba1c9a-a569-11e3-859d-5d753ea0898c.jpeg)
+
+
 This project is an experiment in client-side data processing and visualization. Most of the code in this projest is taken from https://github.com/cambecc/earth and has been re-purposed to support easier application to a variety of mapping APIs and Frameworks. 
 
 ## How it works 
