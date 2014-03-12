@@ -3,7 +3,7 @@
 ![Wind JS](https://f.cloud.github.com/assets/351164/2349895/36ba1c9a-a569-11e3-859d-5d753ea0898c.jpeg)
 
 
-This project is an experiment in client-side data processing and visualization. Most of the code in this projest is taken from https://github.com/cambecc/earth and has been re-purposed to support easier application to a variety of mapping APIs and Frameworks. 
+This project is an experiment in client-side data processing and visualization. Most of the code in this project is taken from https://github.com/cambecc/earth and has been re-purposed to support easier application to a variety of mapping APIs and Frameworks. 
 
 ## How it works 
 
@@ -17,7 +17,7 @@ The code for this project uses nothing but an HTML5 Canvas element and pure Java
 
 For more information about GFS data visit: [GFS Data](http://nomads.ncdc.noaa.gov/data.php?name=access#hires_weather_datasets).
 
-Before GFS data can be used with this code it has to be converted into JSON. Do this we used another awesome project by @cambecc here [https://github.com/cambecc/grib2json](https://github.com/cambecc/grib2json). That tool convert data in the GRIB2 file format into a JSON structure with the grid represented as an array. An example result of that tool can be seen in the `gfs.json` file. 
+Before GFS data can be used with this code it has to be converted into JSON. To do this we used another awesome project by @cambecc here [https://github.com/cambecc/grib2json](https://github.com/cambecc/grib2json). That tool converts data in the GRIB2 file format into a JSON structure with the grid represented as an array. An example result of that tool can be seen in the `gfs.json` file. 
 
 ## Resources
 
