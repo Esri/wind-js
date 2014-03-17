@@ -1,14 +1,14 @@
-/*  Global class for simulating the movement of particle through a 1km wind grid 
+/*  Global class for simulating the movement of particle through a 1km wind grid
 
-    credit: All the credit for this work goes to: https://github.com/cambecc for creating the repo: 
-      https://github.com/cambecc/earth. The majority of this code is directly take nfrom there, since its awesome. 
+    credit: All the credit for this work goes to: https://github.com/cambecc for creating the repo:
+      https://github.com/cambecc/earth. The majority of this code is directly take nfrom there, since its awesome.
 
-    This class takes a canvas element and an array of data (1km GFS from http://www.emc.ncep.noaa.gov/index.php?branch=GFS) 
-    and then uses a mercator (forward/reverse) projection to correctly map wind vectors in "map space". 
+    This class takes a canvas element and an array of data (1km GFS from http://www.emc.ncep.noaa.gov/index.php?branch=GFS)
+    and then uses a mercator (forward/reverse) projection to correctly map wind vectors in "map space".
 
-    The "start" method takes the bounds of the map at its current extent and starts the whole gridding, 
-    interpolation and animation process.  
-*/ 
+    The "start" method takes the bounds of the map at its current extent and starts the whole gridding,
+    interpolation and animation process.
+*/
 
 var Windy = function( params ){
   var VELOCITY_SCALE = 1/70000;             // scale for wind velocity (completely arbitrary--this value looks nice)
@@ -37,7 +37,7 @@ var Windy = function( params ){
       return [u, v, Math.sqrt(u * u + v * v)];
   };
 
-  
+
   var createWindBuilder = function(uComp, vComp) {
       var uData = uComp.data, vData = vComp.data;
       return {
@@ -120,7 +120,7 @@ var Windy = function( params ){
   };
 
 
-  
+
   /**
    * @returns {Boolean} true if the specified value is not null and not undefined.
    */
@@ -170,7 +170,7 @@ var Windy = function( params ){
       var H = Math.pow(10, -5.2);
       var hλ = λ < 0 ? H : -H;
       var hφ = φ < 0 ? H : -H;
-      
+
       var pλ = project(φ, λ + hλ,windy);
       var pφ = project(φ + hφ, λ, windy);
 
@@ -186,7 +186,7 @@ var Windy = function( params ){
   };
 
 
-  
+
   var createField = function(columns, bounds, callback) {
 
       /**
@@ -207,7 +207,7 @@ var Windy = function( params ){
       field.randomize = function(o) {  // UNDONE: this method is terrible
           var x, y;
           var safetyNet = 0;
-          do { 
+          do {
               x = Math.round(Math.floor(Math.random() * bounds.width) + bounds.x);
               y = Math.round(Math.floor(Math.random() * bounds.height) + bounds.y)
           } while (field(x, y)[2] === null && safetyNet++ < 30);
@@ -250,7 +250,7 @@ var Windy = function( params ){
     var lon = rad2deg(windy.west) + x / windy.width * rad2deg(mapLonDelta);
     return [lon, lat];
   };
- 
+
   var mercY = function( lat ) {
     return Math.log( Math.tan( lat / 2 + Math.PI / 4 ) );
   };
@@ -268,7 +268,7 @@ var Windy = function( params ){
     return [x, y];
   };
 
-  
+
   var interpolateField = function( grid, bounds, extent, callback ) {
 
     var projection = {};
@@ -316,7 +316,7 @@ var Windy = function( params ){
     function asColorStyle(r, g, b, a) {
         return "rgba(" + 243 + ", " + 243 + ", " + 238 + ", " + a + ")";
     }
-    
+
     function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
     function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
     function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
@@ -362,7 +362,7 @@ var Windy = function( params ){
 
     var colorStyles = windIntensityColorScale(INTENSITY_SCALE_STEP, MAX_WIND_INTENSITY);
     var buckets = colorStyles.map(function() { return []; });
-    
+
     var particleCount = Math.round(bounds.width * PARTICLE_MULTIPLIER);
     if (isMobile()) {
       particleCount *= PARTICLE_REDUCTION;
@@ -449,7 +449,7 @@ var Windy = function( params ){
   }
 
   var start = function( bounds, width, height, extent ){
-    
+
     var mapBounds = {
       south: deg2rad(extent[0][1]),
       north: deg2rad(extent[1][1]),
@@ -465,7 +465,7 @@ var Windy = function( params ){
     buildGrid( params.data, function(grid){
       // interpolateField
       interpolateField( grid, buildBounds( bounds, width, height), mapBounds, function( bounds, field ){
-        // animate the canvas with random points 
+        // animate the canvas with random points
         windy.field = field;
         animate( bounds, field );
       });
@@ -478,7 +478,7 @@ var Windy = function( params ){
     if (windy.timer) clearTimeout(windy.timer)
   };
 
-    
+
   var windy = {
     params: params,
     start: start,
@@ -491,10 +491,12 @@ var Windy = function( params ){
 
 
 // shim layer with setTimeout fallback
-window.requestAnimFrame = (function(){
+window.requestAnimationFrame = (function(){
   return  window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
+          window.oRequestAnimationFrame ||
+          window.msRequestAnimationFrame ||
           function( callback ){
             window.setTimeout(callback, 1000 / 20);
           };
