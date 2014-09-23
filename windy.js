@@ -11,7 +11,7 @@
 */
 
 var Windy = function( params ){
-  var VELOCITY_SCALE = 1/70000;             // scale for wind velocity (completely arbitrary--this value looks nice)
+  var VELOCITY_SCALE = 0.011;             // scale for wind velocity (completely arbitrary--this value looks nice)
   var INTENSITY_SCALE_STEP = 10;            // step size of particle intensity color scale
   var MAX_WIND_INTENSITY = 40;              // wind velocity at which particle intensity is maximum (m/s)
   var MAX_PARTICLE_AGE = 100;                // max number of frames a particle is drawn before regeneration
@@ -272,7 +272,7 @@ var Windy = function( params ){
   var interpolateField = function( grid, bounds, extent, callback ) {
 
     var projection = {};
-    var velocityScale = bounds.height * VELOCITY_SCALE;
+    var velocityScale = VELOCITY_SCALE;
 
     var columns = [];
     var x = bounds.x;
