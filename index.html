@@ -41,7 +41,7 @@
       };
     </script>
     <script src="./windy.js"></script>
-    <script src="//js.arcgis.com/3.8compact/"></script>
+    <script src="//js.arcgis.com/3.12/"></script>
     <script>
       var map, rasterLayer;
       var canvasSupport;
@@ -63,18 +63,10 @@
         // does the browser support canvas? 
         canvasSupport = supports_canvas();
         
-        // hook up elevation slider events
-        esriConfig.defaults.map.basemaps.darkgray = {
-          baseMapLayers: [
-            { url: "http://tiles4.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Dark_Gray_Base_Beta/MapServer" }
-          ],
-          title: "Dark Gray"
-        };
-
         map = new Map("mapCanvas", {
           center: [-99.076, 39.132],
           zoom: 3,
-          basemap: "darkgray"
+          basemap: "dark-gray"
         });
 
         map.on("load", mapLoaded);
