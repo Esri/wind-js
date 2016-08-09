@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
     <title>Wind Animation</title>
 
-    <link rel="stylesheet" href="http://js.arcgis.com/3.8/js/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
 
     <style>
       html,body {
@@ -19,50 +19,54 @@
         padding:0;
       }
 
+      #credit {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: #fff;
+        font-size: 14px;
+      }
+
+      #credit a {
+        color: #08c;
+      }
+
     </style>
 
     <script>
-      var dojoConfig = { 
+      var dojoConfig = {
         paths: {
           plugins: location.pathname.replace(/\/[^/]+$/, "") + "/plugins"
         }
       };
     </script>
     <script src="./windy.js"></script>
-    <script src="http://js.arcgis.com/3.8compact/"></script>
+    <script src="https://js.arcgis.com/3.15/"></script>
     <script>
       var map, rasterLayer;
       var canvasSupport;
 
       require([
-        "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", 
+        "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
         "esri/domUtils", "esri/request",
-        "dojo/parser", "dojo/number", "dojo/json", "dojo/dom", 
+        "dojo/parser", "dojo/number", "dojo/json", "dojo/dom",
         "dijit/registry", "plugins/RasterLayer","esri/layers/WebTiledLayer",
         "esri/config",
         "dojo/domReady!"
       ], function(
-        Map, ArcGISTiledMapServiceLayer, 
+        Map, ArcGISTiledMapServiceLayer,
         domUtils, esriRequest,
-        parser, number, JSON, dom, 
+        parser, number, JSON, dom,
         registry, RasterLayer, WebTiledLayer, esriConfig
       ){
         parser.parse();
-        // does the browser support canvas? 
+        // does the browser support canvas?
         canvasSupport = supports_canvas();
-        
-        // hook up elevation slider events
-        esriConfig.defaults.map.basemaps.darkgray = {
-          baseMapLayers: [
-            { url: "http://tiles4.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Dark_Gray_Base_Beta/MapServer" }
-          ],
-          title: "Dark Gray"
-        };
 
         map = new Map("mapCanvas", {
           center: [-99.076, 39.132],
           zoom: 3,
-          basemap: "darkgray"
+          basemap: "dark-gray"
         });
 
         map.on("load", mapLoaded);
@@ -75,7 +79,7 @@
               opacity: 0.55
             });
             map.addLayer(rasterLayer);
-            
+
             map.on("extent-change", redraw);
             map.on("resize", function(){});
             map.on("zoom-start", redraw);
@@ -99,7 +103,7 @@
           }
         }
 
-        // does the browser support canvas? 
+        // does the browser support canvas?
         function supports_canvas() {
           return !!document.createElement("canvas").getContext;
         }
@@ -114,9 +118,9 @@
           var extent = map.geographicExtent;
           setTimeout(function(){
             windy.start(
-              [[0,0],[map.width, map.height]], 
-              map.width, 
-              map.height, 
+              [[0,0],[map.width, map.height]],
+              map.width,
+              map.height,
               [[extent.xmin, extent.ymin],[extent.xmax, extent.ymax]]
             );
           },500);
@@ -124,10 +128,11 @@
       });
     </script>
   </head>
-  
+
   <body class="">
      <div id="mapCanvas" style="height:100%;">
      </div>
+     <div id="credit">Inspired by <a href="https://github.com/cambecc/earth">Earth</a>, data from <a href="http://nomads.ncdc.noaa.gov/data.php?name=access#hires_weather_datasets">GFS</a>, open source on <a href="https://github.com/Esri/wind-js">Github</a></div>
   </body>
 
 </html>
