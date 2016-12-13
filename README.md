@@ -42,7 +42,7 @@ All the credit for this work goes to: https://github.com/cambecc for creating th
 
 ## Licensing
 
-This project inherits the MIT license from it's [original code base](https://github.com/cambecc/earth) from which 95% of this code was "cp'd" 
+This project inherits the MIT license from its [original code base](https://github.com/cambecc/earth) by @cambecc from where 95% of this code was copied from.
 
 A copy of the license is available in the repository's [license.txt]( https://raw.github.com/Esri/wind-js/master/license.txt) file.
 
