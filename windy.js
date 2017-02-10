@@ -108,6 +108,8 @@ var Windy = function( params ){
                   if (isValue(g01) && isValue(g11)) {
                       // All four points found, so interpolate the value.
                       return builder.interpolate(i - fi, j - fj, g00, g10, g01, g11);
+                  }else{
+                    return [g00, g10, Math.sqrt(g00 * g00 + g10 * g10)];
                   }
               }
           }
